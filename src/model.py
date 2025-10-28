@@ -38,11 +38,8 @@ class VariationalAutoencoder(nn.Module):
         x_recon = self.decoder(latent)
         return x_recon, latent_mu, latent_logvar
 
-    def latent_sample(self, mu, logvar, sampleme=False):
-        if self.training or sampleme:
-            # the reparameterization trick
-            std = logvar.mul(0.5).exp_()
-            eps = torch.empty_like(std).normal_()
-            return eps.mul(std).add_(mu)
-        else:
-            return mu
+    def latent_sample(self, mu, logvar):
+        # the reparameterization trick
+        std = logvar.mul(0.5).exp_()
+        eps = torch.empty_like(std).normal_()
+        return eps.mul(std).add_(mu)
